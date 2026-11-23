@@ -34,3 +34,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # A new package has no trusted publisher on npm yet: publish with the organization's token.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
