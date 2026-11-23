@@ -1,0 +1,18 @@
+---
+// The top of a sub page: a huge title, then a lead and up to two facts on one line.
+import type { Fact } from "../lib/types";
+
+interface Props {
+	title: string;
+	lead: string;
+	facts?: Fact[];
+}
+
+const { title, lead, facts = [] } = Astro.props;
+---
+
+<header class="phero solo"><h1>{title}</h1></header>
+<div class="pintro">
+	<p>{lead}</p>
+	{facts.map((f) => <div><span class="k">{f.label}</span>{f.href ? <a href={f.href}>{f.value}</a> : f.value}</div>)}
+</div>

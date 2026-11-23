@@ -1,0 +1,32 @@
+---
+// A bar chart as a table: a name and a detail, a bar with its value, a right column.
+interface Props {
+	label: string;
+	head: [string, string, string];
+	rows: Array<{ name: string; detail?: string; value: number; display: string; right?: string; ours?: boolean }>;
+}
+
+const { label, head, rows } = Astro.props;
+const max = Math.max(...rows.map((r) => r.value), 1);
+---
+
+<div class="bars" role="table" aria-label={label}>
+	<div class="bars-head" role="row">
+		<span role="columnheader">{head[0]}</span><span role="columnheader">{head[1]}</span><span role="columnheader" class="u">{head[2]}</span>
+	</div>
+	{
+		rows.map((r) => (
+			<div class:list={["bar", { ours: r.ours }]} role="row">
+				<span role="cell">
+					<b>{r.name}</b>
+					{r.detail && <small>{r.detail}</small>}
+				</span>
+				<span role="cell" class="track-bar">
+					<i style={`width:${(r.value / max) * 100}%`} />
+					<em>{r.display}</em>
+				</span>
+				<span role="cell" class="u">{r.right}</span>
+			</div>
+		))
+	}
+</div>

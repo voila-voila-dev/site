@@ -1,0 +1,92 @@
+---
+// A docs page: the navigation on the left, the article in the middle, "On this page" on the
+// right, previous and next from the navigation. Content is MDX (or Markdown); give it the
+// headings Astro renders (`const { headings } = await render(entry)`). The site's top bar and
+// footer come as props; its logo in the "logo" slot.
+import "../styles/docs.css";
+import type { Heading, Link, NavGroup } from "../lib/types";
+import Base from "./Base.astro";
+import Footer from "./Footer.astro";
+import Top from "./Top.astro";
+
+interface Props {
+	title: string;
+	description: string;
+	siteName: string;
+	nav: NavGroup[];
+	headings?: Heading[];
+	top: { name: string; href?: string; links?: Link[]; repo?: string; end?: Link };
+	footer: { note: string; by?: Link; email?: string; links?: Link[] };
+	/** Where to edit this page, e.g. its file on GitHub. */
+	edit?: string;
+}
+
+const { title, description, siteName, nav, headings = [], top, footer, edit } = Astro.props;
+const here = Astro.url.pathname.replace(/\/$/, "") || "/";
+const flat = nav.flatMap((g) => g.items.map((item) => ({ ...item, group: g.title })));
+const at = flat.findIndex((item) => item.href.replace(/\/$/, "") === here);
+const current = flat[at];
+const prev = at > 0 ? flat[at - 1] : undefined;
+const next = at >= 0 && at < flat.length - 1 ? flat[at + 1] : undefined;
+const outline = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Base title={`${title} · ${siteName} docs`} description={description} siteName={siteName}>
+	<div class="in">
+		<Top {...top}><slot name="logo" slot="logo" /></Top>
+	</div>
+	<div class="in docs">
+		<aside class="docs-nav">
+			<details open>
+				<summary>Docs</summary>
+				{
+					nav.map((g) => (
+						<div class="docs-group">
+							<span class="k">{g.title}</span>
+							<ul>
+								{g.items.map((item) => (
+									<li>
+										<a href={item.href} aria-current={item.href.replace(/\/$/, "") === here ? "page" : undefined}>
+											{item.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</details>
+		</aside>
+
+		<article class="prose">
+			<header class="docs-head">
+				{current && <span class="k">{current.group}</span>}
+				<h1>{title}</h1>
+				<p class="lead">{description}</p>
+			</header>
+			<slot />
+			<nav class="docs-pager" aria-label="Previous and next">
+				{prev ? <a href={prev.href}><span class="k">← Previous</span><b>{prev.label}</b></a> : <span />}
+				{next && <a class="next" href={next.href}><span class="k">Next →</span><b>{next.label}</b></a>}
+			</nav>
+			{edit && <p class="docs-edit"><a href={edit}>Edit this page ↗</a></p>}
+		</article>
+
+		<aside class="docs-toc">
+			{
+				outline.length > 1 && (
+					<>
+						<span class="k">On this page</span>
+						<ul>{outline.map((h) => <li class={`d${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+					</>
+				)
+			}
+		</aside>
+	</div>
+	<div class="in"><Footer {...footer} /></div>
+</Base>
+
+<script>
+	// On a phone, the navigation starts folded above the article.
+	if (matchMedia("(max-width: 760px)").matches) document.querySelector(".docs-nav details")?.removeAttribute("open");
+</script>

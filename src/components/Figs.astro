@@ -1,0 +1,9 @@
+---
+interface Props {
+	items: Array<{ value: string; label: string }>;
+}
+
+const { items } = Astro.props;
+---
+
+<div class="figs">{items.map((f) => <div><strong>{f.value}</strong><span class="k">{f.label}</span></div>)}</div>

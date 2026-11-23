@@ -1,0 +1,41 @@
+---
+import Badges from "@voila.dev/site/components/Badges.astro";
+import Bars from "@voila.dev/site/components/Bars.astro";
+import Base from "@voila.dev/site/components/Base.astro";
+import CodeBlock from "@voila.dev/site/components/CodeBlock.astro";
+import Cta from "@voila.dev/site/components/Cta.astro";
+import FeatureGrid from "@voila.dev/site/components/FeatureGrid.astro";
+import Figs from "@voila.dev/site/components/Figs.astro";
+import Fixes from "@voila.dev/site/components/Fixes.astro";
+import Footer from "@voila.dev/site/components/Footer.astro";
+import Marquee from "@voila.dev/site/components/Marquee.astro";
+import PageHero from "@voila.dev/site/components/PageHero.astro";
+import Section from "@voila.dev/site/components/Section.astro";
+import Steps from "@voila.dev/site/components/Steps.astro";
+import Toc from "@voila.dev/site/components/Toc.astro";
+import Top from "@voila.dev/site/components/Top.astro";
+import Versus from "@voila.dev/site/components/Versus.astro";
+---
+
+<Base title="example" description="Every component of @voila.dev/site." siteName="example">
+	<div class="in">
+		<Top name="example" links={[{ href: "#a", label: "A" }]} repo="https://github.com/voila-voila-dev/site" />
+		<PageHero title="Example" lead="Every component, once." facts={[{ label: "Kit", value: "@voila.dev/site" }]} />
+		<Toc items={[{ id: "a", name: "A", text: "Sections" }]} />
+	</div>
+	<Marquee items={["One", "Two"]} />
+	<main class="in">
+		<Section id="a" title="Section" tag="A tag">
+			<Fixes name="it" rows={[{ pain: "Slow", fix: "Fast", status: "done" }]} statuses={{ done: { label: "Done", color: "#1fbf75" } }} />
+			<Versus rows={[{ name: "ours", share: 0.3, label: "30 %", ours: true }, { name: "theirs", share: 1, label: "100 %" }]} />
+			<Bars label="Bars" head={["Name", "Value", "Right"]} rows={[{ name: "ours", value: 1, display: "1 ms", ours: true }, { name: "theirs", value: 3, display: "3 ms" }]} />
+			<Figs items={[{ value: "1", label: "one" }]} />
+			<Steps items={[["One", "First"], ["Two", "Second"], ["Three", "Third"]]} />
+			<CodeBlock code={`const a = "b"; // c`} />
+			<Badges items={[{ href: "#", label: "MIT" }]} />
+			<FeatureGrid items={[{ group: "G", name: "N", text: "T", link: { href: "#", label: "See" } }]} />
+		</Section>
+		<Cta text="Get in touch." buttons={[{ href: "#", label: "Go" }]} />
+	</main>
+	<div class="in"><Footer note="example · MIT · by" by={{ href: "https://voila.dev", label: "VOILA DEVELOPMENT" }} links={[{ href: "#", label: "GitHub" }]} /></div>
+</Base>

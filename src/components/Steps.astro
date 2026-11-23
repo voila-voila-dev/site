@@ -1,0 +1,13 @@
+---
+interface Props {
+	items: Array<[name: string, text: string]>;
+}
+
+const { items } = Astro.props;
+const pad = (i: number) => String(i + 1).padStart(2, "0");
+const columns = items.length >= 4 ? "four" : "three";
+---
+
+<div class:list={["steps", columns]}>
+	{items.map(([name, text], i) => <div><span class="n">{pad(i)}</span><b>{name}</b><p>{text}</p></div>)}
+</div>

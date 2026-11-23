@@ -1,0 +1,23 @@
+---
+// Features four to a row: a group, a name, a line, and a link to see it.
+import type { Link } from "../lib/types";
+
+interface Props {
+	items: Array<{ group: string; name: string; text: string; link?: Link }>;
+}
+
+const { items } = Astro.props;
+---
+
+<div class="features">
+	{
+		items.map((f) => (
+			<div>
+				<span class="k">{f.group}</span>
+				<b>{f.name}</b>
+				<p>{f.text}</p>
+				{f.link && <a href={f.link.href}>{f.link.label} →</a>}
+			</div>
+		))
+	}
+</div>

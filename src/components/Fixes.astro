@@ -1,0 +1,27 @@
+---
+// Pain, crossed out, then the fix and its status: what a project fixes, row by row.
+import type { Status } from "../lib/types";
+
+interface Props {
+	name: string;
+	rows: Array<{ pain: string; fix: string; status: string }>;
+	statuses: Record<string, Status>;
+}
+
+const { name, rows, statuses } = Astro.props;
+const pad = (i: number) => String(i + 1).padStart(2, "0");
+---
+
+<div class="table fixes">
+	<div class="row th"><span>No.</span><span>The pain</span><span>{name}</span><span class="u">Status</span></div>
+	{
+		rows.map((f, i) => (
+			<div class="row">
+				<span class="n">{pad(i)}</span>
+				<p class="pain">{f.pain}</p>
+				<b>{f.fix}</b>
+				<span class="st u" style={`--s:${statuses[f.status]?.color ?? "#b9b9b4"}`}>{statuses[f.status]?.label ?? f.status}</span>
+			</div>
+		))
+	}
+</div>

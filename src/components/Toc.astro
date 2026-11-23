@@ -1,0 +1,10 @@
+---
+// The index of a long page: numbered anchors, a name and a line each.
+interface Props {
+	items: Array<{ id: string; name: string; text: string }>;
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="toc">{items.map((t, i) => <a href={`#${t.id}`}><span class="n">{String(i + 1).padStart(2, "0")}</span><b>{t.name}</b><em>{t.text}</em></a>)}</nav>

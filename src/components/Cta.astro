@@ -1,0 +1,16 @@
+---
+import type { Link } from "../lib/types";
+
+interface Props {
+	text: string;
+	sub?: string;
+	buttons: Link[];
+}
+
+const { text, sub, buttons } = Astro.props;
+---
+
+<div class="access">
+	<p>{text}{sub && <span class="sub">{sub}</span>}</p>
+	<div class="ctas">{buttons.map((b) => <a class="btn" href={b.href}>{b.label}</a>)}</div>
+</div>

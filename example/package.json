@@ -1,0 +1,14 @@
+{
+	"name": "site-example",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "bunx --bun astro dev",
+		"build": "bunx --bun astro build"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^8.1.6",
+		"@voila.dev/site": "workspace:*",
+		"astro": "^7.4.13"
+	}
+}

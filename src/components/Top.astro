@@ -1,0 +1,56 @@
+---
+// The top bar: the brand (a logo in the "logo" slot, then its name), the links, and on the
+// right either a GitHub star counter (`repo`) or a plain link (`end`). The count is read at
+// build time and refreshed in the browser; early on, it nudges visitors to star.
+import { slugOf, starsOf } from "../lib/github";
+import type { Link } from "../lib/types";
+
+interface Props {
+	name: string;
+	href?: string;
+	links?: Link[];
+	repo?: string;
+	end?: Link;
+}
+
+const { name, href = "/", links = [], repo, end } = Astro.props;
+const slug = repo ? slugOf(repo) : undefined;
+const stars = slug ? await starsOf(slug, 0) : 0;
+const hint = (n: number) => (n === 0 ? "Be the first to star" : n < 25 ? "Be one of the first" : "");
+---
+
+<div class="top">
+	<a href={href} class="crumb brand"><slot name="logo" />{name}</a>
+	{links.length > 0 && <nav>{links.map((l) => <a href={l.href}>{l.label}</a>)}</nav>}
+	{
+		repo ? (
+			<a class="stars" href={repo} data-repo={slug}>
+				<span class="stars-hint">{hint(stars)}</span>
+				<span class="stars-btn">
+					<span aria-hidden="true">★</span> Star<span class="stars-count">{stars}</span>
+				</span>
+			</a>
+		) : (
+			end && <a href={end.href}>{end.label}</a>
+		)
+	}
+</div>
+
+<script>
+	// Refresh the star count between deploys; keep the build-time value if GitHub is unreachable.
+	const link = document.querySelector<HTMLAnchorElement>(".stars");
+	const hint = (n: number) => (n === 0 ? "Be the first to star" : n < 25 ? "Be one of the first" : "");
+	if (link?.dataset.repo) {
+		fetch(`https://api.github.com/repos/${link.dataset.repo}`)
+			.then((response) => (response.ok ? response.json() : null))
+			.then((body: { stargazers_count?: number } | null) => {
+				const n = body?.stargazers_count;
+				if (typeof n !== "number") return;
+				const count = link.querySelector(".stars-count");
+				const text = link.querySelector(".stars-hint");
+				if (count) count.textContent = String(n);
+				if (text) text.textContent = hint(n);
+			})
+			.catch(() => {});
+	}
+</script>

@@ -1,0 +1,37 @@
+{
+	"name": "@voila.dev/site",
+	"version": "0.1.0",
+	"description": "The look of voila.dev and its project sites, as Astro components: top bar with GitHub stars, sections, catalogue tables, benchmark bars, highlighted code, calls to action, and a docs layout for MDX.",
+	"license": "MIT",
+	"type": "module",
+	"homepage": "https://github.com/voila-voila-dev/site",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/voila-voila-dev/site.git"
+	},
+	"keywords": ["astro", "astro-component", "landing", "docs", "voila.dev"],
+	"files": ["src", "LICENSE", "README.md"],
+	"exports": {
+		"./components/*": "./src/components/*",
+		"./styles/*": "./src/styles/*",
+		"./lib/*": "./src/lib/*.ts"
+	},
+	"workspaces": ["example"],
+	"scripts": {
+		"build": "cd example && bun run build",
+		"dev": "cd example && bun run dev",
+		"changeset": "changeset"
+	},
+	"peerDependencies": {
+		"astro": ">=6"
+	},
+	"devDependencies": {
+		"@changesets/changelog-github": "0.5.2",
+		"@changesets/cli": "2.29.8",
+		"astro": "^7.4.13",
+		"shiki": "^4.6.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

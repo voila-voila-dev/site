@@ -1,0 +1,19 @@
+---
+import type { Link } from "../lib/types";
+
+interface Props {
+	/** Left: who made it, e.g. "replay · MIT · by". */
+	note: string;
+	by?: Link;
+	email?: string;
+	links?: Link[];
+}
+
+const { note, by, email, links = [] } = Astro.props;
+---
+
+<footer>
+	<span>{note}{by && <> <a href={by.href}>{by.label}</a></>}</span>
+	{email && <span>{email}</span>}
+	<span>{links.map((l, i) => <>{i > 0 && " · "}<a href={l.href}>{l.label}</a></>)}</span>
+</footer>

@@ -1,0 +1,20 @@
+---
+// One meter per contender, ours in volt: `share` is the filled part, 0 to 1.
+interface Props {
+	rows: Array<{ name: string; share: number; label: string; ours?: boolean }>;
+}
+
+const { rows } = Astro.props;
+---
+
+<div class="versus">
+	{
+		rows.map((r) => (
+			<div class:list={{ ours: r.ours }}>
+				<b>{r.name}</b>
+				<span class="meter"><i style={`width:${Math.max(0, Math.min(1, r.share)) * 100}%`} /></span>
+				<span class="k">{r.label}</span>
+			</div>
+		))
+	}
+</div>
