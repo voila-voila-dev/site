@@ -16,10 +16,9 @@
 		"./styles/*": "./src/styles/*",
 		"./lib/*": "./src/lib/*.ts"
 	},
-	"workspaces": ["example"],
 	"scripts": {
-		"build": "cd example && bun run build",
-		"dev": "cd example && bun run dev",
+		"build": "cd example && bun install && bun run build",
+		"dev": "cd example && bun install && bun run dev",
 		"changeset": "changeset"
 	},
 	"peerDependencies": {
@@ -27,9 +26,7 @@
 	},
 	"devDependencies": {
 		"@changesets/changelog-github": "0.5.2",
-		"@changesets/cli": "2.29.8",
-		"astro": "^7.4.13",
-		"shiki": "^4.6.0"
+		"@changesets/cli": "2.29.8"
 	},
 	"publishConfig": {
 		"access": "public"
