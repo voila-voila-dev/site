@@ -16,12 +16,12 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.3
-      # `changeset publish` publishes what npm does not have yet, with the organization's token.
+      # `changeset publish` publishes what npm does not have yet, through npm trusted publishing
+      # (OIDC, `id-token: write`): no token. It needs npm 11.5 or later.
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
-          scope: "@voila.dev"
       - run: bun install --frozen-lockfile
       - run: bun run build
       - uses: changesets/action@v1
@@ -33,6 +33,4 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # A new package has no trusted publisher on npm yet: publish with the organization's token.
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
